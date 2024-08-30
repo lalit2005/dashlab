@@ -97,5 +97,20 @@ func fetchLLM(prompt string) (string, error) {
 		return "", fmt.Errorf("failed to read response body: %v", err)
 	}
 
-	return string(responseBody), nil
+	var result []map[string]interface{}
+	err = json.Unmarshal(responseBody, &result)
+	if err != nil {
+		return "", fmt.Errorf("failed to unmarshal response body: %v", err)
+	}
+
+	if len(result) == 0 {
+		return "", fmt.Errorf("no data in response")
+	}
+
+	generatedText, ok := result[0]["generated_text"].(string)
+	if !ok {
+		return "", fmt.Errorf("generated_text field not found in response")
+	}
+
+	return generatedText, nil
 }
