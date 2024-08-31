@@ -1,0 +1,7 @@
+services:
+  app:
+    image: lalit2005/dashlab-assignment
+    environment:
+      - HUGGINGFACE_API_TOKEN=$HUGGINGFACE_API_TOKEN
+    ports:
+      - "4000:4000"

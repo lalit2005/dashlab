@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo "Please enter your Hugging Face API key:"
-read HUGGINGFACE_API_TOKEN
-export HUGGINGFACE_API_TOKEN
+if [ -z "$HUGGINGFACE_API_TOKEN" ]; then
+    echo "HUGGINGFACE_API_TOKEN is not set. Please set it when running the container."
+    exit 1
+fi
 
-go build # run the build command
-
-HUGGINGFACE_API_TOKEN=$HUGGINGFACE_API_TOKEN ./dashlab server &
+./dashlab server &
 SERVER_PID=$!
 
 ./dashlab client
@@ -14,3 +13,4 @@ SERVER_PID=$!
 echo "Successfully finished running script"
 
 kill $SERVER_PID
+
